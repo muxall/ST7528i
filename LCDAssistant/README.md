@@ -1,1 +1,1 @@
-
+The LCD Assistant is a program that converts bmp files created with programs like mspaint to hex files that can be used for drawing on the LCD.  It can be downloaded at http://en.radzio.dxp.pl/bitmap_converter/
