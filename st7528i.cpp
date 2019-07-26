@@ -180,59 +180,80 @@ void ST7528i::ClearScreen() {
 	//Serial.println("ClearScreen End.");
 }
 
+void ST7528i::ClearPartial(uint8_t X, uint8_t Y, uint8_t W, uint8_t H ){
+	uint8_t pX;
+	uint8_t pY;
+	//uint8_t tmpCh;
+	uint8_t bL;
+
+	pY = Y;
+	while (pY < Y + H) {
+		pX = X;
+		while (pX < X + W) {
+			bL = 0;
+			while (bL < 8) {
+				SetPixel(pX,pY + bL,1);
+				bL++;
+			}
+			pX++;
+		}
+		pY += 8;
+	}
+}
+
 // Clears the vRAM memory (fill with zeros)
 // note: memset() here will be faster, but needs "string.h" include
-void ST7528i::ClearPartial(uint8_t column_x, uint8_t row_y, uint8_t width_x, uint8_t height_y ){
-	uint8_t *ptr = vRAM;
-	uint8_t page;
-	uint8_t startPg = (row_y >> 3);
-	uint8_t endPg = ((row_y + height_y) >> 3);
-	//uint8_t col_lsb = ST7528i_COLM_LSB;
+// void ST7528i::ClearPartial(uint8_t column_x, uint8_t row_y, uint8_t width_x, uint8_t height_y ){
+	// uint8_t *ptr = vRAM;
+	// uint8_t page;
+	// uint8_t startPg = (row_y >> 3);
+	// uint8_t endPg = ((row_y + height_y) >> 3);
+	// //uint8_t col_lsb = ST7528i_COLM_LSB;
 	
-	// Column LSB
-	// if (scr_orientation & (SCR_ORIENT_180 | SCR_ORIENT_CW)) {
-		// // The display controller actually have 132 columns but the display
-		// // itself have only 128, therefore must shift for 4 nonexistent columns
-		// col_lsb = ST7528i_COLM_LSB + 4;
-	// } else {
-		// col_lsb = ST7528i_COLM_LSB;
-	// }
+	// // Column LSB
+	// // if (scr_orientation & (SCR_ORIENT_180 | SCR_ORIENT_CW)) {
+		// // // The display controller actually have 132 columns but the display
+		// // // itself have only 128, therefore must shift for 4 nonexistent columns
+		// // col_lsb = ST7528i_COLM_LSB + 4;
+	// // } else {
+		// // col_lsb = ST7528i_COLM_LSB;
+	// // }
 	
-	ptr +=  ((row_y / 8) * (SCR_PAGE_WIDTH * 4)) + (column_x * 4);
-	// Send vRAM to display by pages
-	for(page = startPg; page <= endPg; page++){  
-		SetPage(page);	
-		SetColumn(column_x);
-		//Serial.print("\n page="); Serial.println(page, HEX);
-		//printf("ptr= %p\n", (void *)ptr);
+	// ptr +=  ((row_y / 8) * (SCR_PAGE_WIDTH * 4)) + (column_x * 4);
+	// // Send vRAM to display by pages
+	// for(page = startPg; page <= endPg; page++){  
+		// SetPage(page);	
+		// SetColumn(column_x);
+		// //Serial.print("\n page="); Serial.println(page, HEX);
+		// //printf("ptr= %p\n", (void *)ptr);
 				
-		//Clear one page
-		ClearBuf(ptr, width_x * 4);
-		//Serial.println("Sending Buffer...");
-		// Transmit one page
-		SendBuf(ptr, width_x * 4);
+		// //Clear one page
+		// ClearBuf(ptr, width_x * 4);
+		// //Serial.println("Sending Buffer...");
+		// // Transmit one page
+		// SendBuf(ptr, width_x * 4);
 
-		// Move vRAM pointer to the next page and increase display page number
-		ptr += SCR_PAGE_WIDTH * 4;
-		//page++;
-	}
+		// // Move vRAM pointer to the next page and increase display page number
+		// ptr += SCR_PAGE_WIDTH * 4;
+		// //page++;
+	// }
 
-	//FlushPartial(column_x, row_y, width_x, height_y);
-}
+	// //FlushPartial(column_x, row_y, width_x, height_y);
+// }
 
-void ST7528i::ClearBuf(uint8_t *pBuf, uint32_t count) {
-	//Serial.println("SendBuff called...");
-  while (count--){
+// void ST7528i::ClearBuf(uint8_t *pBuf, uint32_t count) {
+	// //Serial.println("SendBuff called...");
+  // while (count--){
 
-	*pBuf = 0x00;
-	 //Serial.print("*pBuf = 0x");
-	 //Serial.print(*pBuf,HEX); 
-	// Serial.print("*pBuf = ");
-	// printf("Address of x is %p\n", (void *)pBuf);
-	// Serial.println("");
-    pBuf++;
-  }
-}
+	// *pBuf = 0x00;
+	 // //Serial.print("*pBuf = 0x");
+	 // //Serial.print(*pBuf,HEX); 
+	// // Serial.print("*pBuf = ");
+	// // printf("Address of x is %p\n", (void *)pBuf);
+	// // Serial.println("");
+    // pBuf++;
+  // }
+// }
 
 
 
@@ -1193,6 +1214,7 @@ void ST7528i::SetPixel(uint8_t X, uint8_t Y, uint8_t GS) {
 
 	// Vertical shift of the pixel bitmap
 	bmap <<= voffs;
+
 
 	// Clear pixel in vRAM (take mask from look-up table)
 	*ptr &= POC_LUT[voffs];
