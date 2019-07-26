@@ -243,10 +243,10 @@ class ST7528i {
 		void SetPartialDisplay(uint8_t phy_line, uint8_t log_line, uint8_t lines_num);
 		void PowerSave(uint8_t pm_state);
 		
-		void ClearBuf(uint8_t *pBuf, uint32_t count);
-		void ClearPartial(uint8_t column_x, uint8_t row_y, uint8_t width_x, uint8_t height_y );
+		//void ClearBuf(uint8_t *pBuf, uint32_t count);
+		//void ClearPartial(uint8_t column_x, uint8_t row_y, uint8_t width_x, uint8_t height_y );
+		void ClearPartial(uint8_t X, uint8_t Y, uint8_t W, uint8_t H );
 		void FlushPartial(uint8_t column_x, uint8_t row_y, uint8_t width_x, uint8_t height_y );
-		void Write21x33(uint8_t row_x, uint8_t column_y, const unsigned char *bitmap);
 		void SetAddr(uint8_t X, uint8_t Y);
 		void SetScrollLine(uint8_t line);
 		void SetOrientation(uint8_t orientation);
@@ -279,7 +279,7 @@ class ST7528i {
 //extern ST7528i LCD;
 
 void Delay_ms(uint16_t dt);
-extern "C" void print_UInt8(uint8_t bin);
-
+//extern "C" void print_UInt8(uint8_t bin);
+extern "C" void println_UInt32(uint32_t voffs);
 
 #endif // __ST7528i_H
