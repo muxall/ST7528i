@@ -8,7 +8,7 @@ static uint8_t scr_orientation = SCR_ORIENT_NORMAL;
 
 // Video RAM buffer (160x129x4bit = 10320 bytes)
 //static uint8_t vRAM[(SCR_W * SCR_H) >> 1] __attribute__((aligned(4)));
-static uint8_t vRAM[(160 * 129) >> 1] __attribute__((aligned(4)));
+static uint8_t vRAM[(SCR_W * SCR_H) >> 1] __attribute__((aligned(4)));
 //uint8_t  *vRAM = (uint8_t *)malloc(SCR_W * ((SCR_H + 7) / 8));
 
 // Look-up table of pixel grayscale level
@@ -109,7 +109,7 @@ ST7528i::ST7528i(uint8_t lcd_sda, uint8_t lcd_scl, uint8_t lcd_rst){
 	scr_height = SCR_H;
 	
 	//Start I2C for LCD
-	Wire.begin(sda, scl);
+	Wire.begin();
 	//Wire.setClock(400000); // choose 400 kHz I2C rate pg80
 	Wire.setClock(ST7528i_FREQ_400K); // choose 100 kHz or 400 kHz I2C rate pg80
 }

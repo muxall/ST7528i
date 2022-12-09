@@ -11,7 +11,7 @@
 #define ST7528i_FREQ_400K 400000 // choose 400 kHz I2C rate pg80
 #define ST7528i_MAX_PAGES 13		//Actually it is 12.5 plus page=16 for icons
 // Screen dimensions
-#define SCR_W                (uint8_t)160 // width
+#define SCR_W                (uint8_t)100 // width
 #define SCR_H                (uint8_t)100 // height
 
 // Screen page width
